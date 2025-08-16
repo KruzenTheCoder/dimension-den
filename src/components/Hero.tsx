@@ -50,6 +50,12 @@ export default function Hero() {
             <Button 
               size="lg" 
               className="glow-button px-8 py-4 text-lg font-semibold"
+              onClick={() => {
+                const element = document.getElementById('projects');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             >
               View My Work
             </Button>
@@ -57,6 +63,12 @@ export default function Hero() {
               variant="outline" 
               size="lg" 
               className="px-8 py-4 text-lg border-glass-border/50 bg-glass-bg/20 backdrop-blur-sm hover:bg-glass-bg/30"
+              onClick={() => {
+                const element = document.getElementById('contact');
+                if (element) {
+                  element.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
             >
               Contact Me
             </Button>

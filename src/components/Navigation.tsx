@@ -10,6 +10,13 @@ const navItems = [
   { name: 'Contact', href: '#contact' },
 ];
 
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id.replace('#', ''));
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
+
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -36,16 +43,16 @@ export default function Navigation() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
               {navItems.map((item, index) => (
-                <motion.a
+                <motion.button
                   key={item.name}
-                  href={item.href}
+                  onClick={() => scrollToSection(item.href)}
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                   className="text-foreground hover:text-primary transition-colors duration-200 font-medium"
                 >
                   {item.name}
-                </motion.a>
+                </motion.button>
               ))}
               
               <motion.div
@@ -53,7 +60,10 @@ export default function Navigation() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
               >
-                <Button className="glow-button">
+                <Button 
+                  className="glow-button"
+                  onClick={() => scrollToSection('#contact')}
+                >
                   Hire Me
                 </Button>
               </motion.div>
@@ -79,16 +89,24 @@ export default function Navigation() {
             >
               <div className="flex flex-col space-y-4">
                 {navItems.map((item) => (
-                  <a
+                  <button
                     key={item.name}
-                    href={item.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-foreground hover:text-primary transition-colors duration-200 font-medium py-2"
+                    onClick={() => {
+                      scrollToSection(item.href);
+                      setIsOpen(false);
+                    }}
+                    className="text-foreground hover:text-primary transition-colors duration-200 font-medium py-2 text-left"
                   >
                     {item.name}
-                  </a>
+                  </button>
                 ))}
-                <Button className="glow-button mt-4">
+                <Button 
+                  className="glow-button mt-4"
+                  onClick={() => {
+                    scrollToSection('#contact');
+                    setIsOpen(false);
+                  }}
+                >
                   Hire Me
                 </Button>
               </div>
