@@ -27,9 +27,9 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <span className="text-gradient">Creative</span>
+            <span className="text-gradient">Kruz</span>
             <br />
-            <span className="text-foreground">Developer</span>
+            <span className="text-foreground">Naidoo</span>
           </motion.h1>
           
           <motion.p 
@@ -38,7 +38,7 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            Crafting immersive digital experiences with cutting-edge technology and innovative design
+            Full-stack developer building scalable solutions that solve real-world problems and drive business growth
           </motion.p>
           
           <motion.div 

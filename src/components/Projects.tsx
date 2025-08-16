@@ -5,24 +5,31 @@ import { ExternalLink, Github } from 'lucide-react';
 
 const projects = [
   {
-    title: "3D Product Showcase",
-    description: "Interactive 3D product visualization with real-time customization and WebGL rendering.",
-    tech: ["Three.js", "React", "GLSL", "Blender"],
+    title: "ERPNext Automation Suite",
+    description: "Complete attendance, payroll, inventory, and project management solution for electrical construction companies.",
+    tech: ["ERPNext", "Frappe", "Python", "JavaScript", "MySQL"],
     gradient: "from-purple-500 to-pink-500",
     image: "/api/placeholder/400/300"
   },
   {
-    title: "AR Shopping Experience",
-    description: "Augmented reality shopping platform that lets users visualize products in their space.",
-    tech: ["AR.js", "WebXR", "React", "Node.js"],
+    title: "OCR Invoice Parser",
+    description: "Intelligent document processing system with automatic data extraction and supplier matching for Purchase Invoices.",
+    tech: ["Python", "OCR", "ERPNext", "Machine Learning", "API Integration"],
     gradient: "from-blue-500 to-cyan-500",
     image: "/api/placeholder/400/300"
   },
   {
-    title: "Interactive Data Visualization",
-    description: "Real-time data visualization dashboard with 3D charts and immersive analytics.",
-    tech: ["D3.js", "Three.js", "TypeScript", "WebGL"],
+    title: "Omnichannel CRM Platform",
+    description: "Unified communication platform integrating multiple channels with backend CRM systems for seamless workflow.",
+    tech: ["React", "Node.js", "REST APIs", "CRM Integration", "TypeScript"],
     gradient: "from-green-500 to-teal-500",
+    image: "/api/placeholder/400/300"
+  },
+  {
+    title: "Candidate Vetting Workflow",
+    description: "Automated recruitment system with AI-powered candidate assessment, skill matching, and automated reporting.",
+    tech: ["Laserfiche", "Python", "AI Integration", "Workflow Automation", "Email APIs"],
+    gradient: "from-orange-500 to-red-500",
     image: "/api/placeholder/400/300"
   }
 ];

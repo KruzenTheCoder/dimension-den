@@ -3,10 +3,13 @@ import { Card } from '@/components/ui/card';
 
 const skills = [
   { name: 'React & Next.js', level: 95, color: 'bg-blue-500' },
-  { name: 'Three.js & WebGL', level: 88, color: 'bg-purple-500' },
-  { name: 'TypeScript', level: 92, color: 'bg-cyan-500' },
-  { name: 'Node.js', level: 85, color: 'bg-green-500' },
-  { name: 'UI/UX Design', level: 90, color: 'bg-pink-500' },
+  { name: 'Node.js & Express', level: 92, color: 'bg-green-500' },
+  { name: 'TypeScript', level: 90, color: 'bg-cyan-500' },
+  { name: '.NET (C#)', level: 88, color: 'bg-purple-500' },
+  { name: 'Python & AI', level: 85, color: 'bg-yellow-500' },
+  { name: 'ERPNext/Frappe', level: 95, color: 'bg-orange-500' },
+  { name: 'Database Design', level: 90, color: 'bg-red-500' },
+  { name: 'DevOps & Docker', level: 85, color: 'bg-indigo-500' },
 ];
 
 export default function About() {
@@ -21,11 +24,11 @@ export default function About() {
           className="text-center mb-20"
         >
           <h2 className="text-5xl md:text-6xl font-bold mb-6">
-            About <span className="text-gradient">Me</span>
+            About <span className="text-gradient">Kruz</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            I'm a passionate developer who loves creating immersive digital experiences 
-            that blend creativity with cutting-edge technology.
+            Full-stack developer with 8 years of experience building scalable solutions 
+            that solve real-world problems and drive business impact.
           </p>
         </motion.div>
 
@@ -40,18 +43,18 @@ export default function About() {
             <Card className="glass-card p-8">
               <h3 className="text-2xl font-bold mb-4 text-gradient">My Journey</h3>
               <p className="text-muted-foreground leading-relaxed">
-                With over 5 years of experience in web development, I specialize in creating 
-                interactive 3D experiences and modern web applications. I'm passionate about 
-                pushing the boundaries of what's possible on the web.
+                I'm Kruz Naidoo, a 27-year-old full-stack developer with 8 years of experience 
+                spanning BPO, enterprise solutions, and diverse industries. I specialize in 
+                building scalable applications using React, Node.js, .NET, Python, and ERPNext.
               </p>
             </Card>
             
             <Card className="glass-card p-8">
-              <h3 className="text-2xl font-bold mb-4 text-gradient">Philosophy</h3>
+              <h3 className="text-2xl font-bold mb-4 text-gradient">My Approach</h3>
               <p className="text-muted-foreground leading-relaxed">
-                I believe in the power of storytelling through technology. Every project 
-                is an opportunity to create something that not only functions beautifully 
-                but also inspires and engages users on an emotional level.
+                I thrive on solving real-world problems by designing reliable, user-friendly 
+                applications that make a tangible impact. From automation workflows to ERP 
+                solutions, I focus on efficiency and innovation.
               </p>
             </Card>
           </motion.div>
