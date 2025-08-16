@@ -26,7 +26,8 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -52,6 +53,10 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				'glass-bg': 'hsl(var(--glass-bg))',
+				'glass-border': 'hsl(var(--glass-border))',
+				'glow-primary': 'hsl(var(--glow-primary))',
+				'glow-secondary': 'hsl(var(--glow-secondary))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
@@ -67,6 +72,17 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			backgroundImage: {
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-card': 'var(--gradient-card)'
+			},
+			boxShadow: {
+				'glow': 'var(--shadow-glow)',
+				'glass': 'var(--shadow-glass)'
+			},
+			fontFamily: {
+				'sans': ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif']
 			},
 			keyframes: {
 				'accordion-down': {
@@ -88,7 +104,11 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'float-delayed': 'float 6s ease-in-out infinite 2s',
+				'glow-pulse': 'glow-pulse 2s ease-in-out infinite',
+				'rotate-slow': 'rotate-slow 20s linear infinite'
 			}
 		}
 	},
