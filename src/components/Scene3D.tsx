@@ -1,99 +1,118 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Sphere, Torus, Box, Environment, Text, Cylinder, Octahedron } from '@react-three/drei';
-import { Suspense, useRef } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls, Float, Sphere, Torus, Box, Environment, Text, Cylinder, Octahedron, Plane, useTexture, Stars, Cloud } from '@react-three/drei';
+import { Suspense, useRef, useMemo } from 'react';
+import { EffectComposer, Bloom, ChromaticAberration, Vignette, Noise } from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
-function FloatingObjects() {
+// Cyberpunk City Buildings
+function CyberpunkBuildings() {
+  const buildingsRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (buildingsRef.current) {
+      buildingsRef.current.rotation.y = state.clock.elapsedTime * 0.05;
+    }
+  });
+
+  const buildings = useMemo(() => {
+    return Array.from({ length: 20 }).map((_, i) => {
+      const angle = (i / 20) * Math.PI * 2;
+      const radius = 15 + Math.random() * 10;
+      const height = 5 + Math.random() * 15;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      
+      return {
+        position: [x, -height/2, z] as [number, number, number],
+        scale: [1 + Math.random() * 2, height, 1 + Math.random() * 2] as [number, number, number],
+        color: `hsl(${180 + Math.random() * 60}, 70%, ${30 + Math.random() * 20}%)`,
+        emissive: `hsl(${180 + Math.random() * 60}, 80%, 20%)`,
+      };
+    });
+  }, []);
+
+  return (
+    <group ref={buildingsRef}>
+      {buildings.map((building, i) => (
+        <Box key={i} args={[1, 1, 1]} position={building.position} scale={building.scale}>
+          <meshStandardMaterial
+            color={building.color}
+            emissive={building.emissive}
+            emissiveIntensity={0.1}
+            roughness={0.8}
+            metalness={0.2}
+          />
+        </Box>
+      ))}
+    </group>
+  );
+}
+
+// Floating Holographic Elements
+function HolographicElements() {
   const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.2;
+      groupRef.current.children.forEach((child, i) => {
+        child.rotation.x = state.clock.elapsedTime * (0.5 + i * 0.1);
+        child.rotation.z = state.clock.elapsedTime * (0.3 + i * 0.05);
+      });
     }
   });
 
   return (
     <group ref={groupRef}>
-      {/* Main sphere with gradient material */}
+      {/* Central Core */}
       <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-        <Sphere args={[1.2, 64, 64]} position={[-3, 1, 0]}>
+        <Sphere args={[1.5, 64, 64]} position={[0, 0, 0]}>
           <meshStandardMaterial 
-            color="#8B5CF6" 
-            roughness={0.05} 
+            color="#00ffff" 
+            roughness={0.1} 
             metalness={0.9}
-            emissive="#4C1D95"
-            emissiveIntensity={0.1}
+            emissive="#0080ff"
+            emissiveIntensity={0.3}
+            transparent
+            opacity={0.8}
           />
         </Sphere>
       </Float>
       
-      {/* Torus with glowing effect */}
-      <Float speed={1.5} rotationIntensity={0.5} floatIntensity={1.5}>
-        <Torus args={[1.5, 0.4, 16, 100]} position={[3, -1, 0]}>
-          <meshStandardMaterial 
-            color="#06B6D4" 
-            roughness={0.05} 
-            metalness={0.9}
-            emissive="#0891B2"
-            emissiveIntensity={0.15}
-          />
-        </Torus>
-      </Float>
-      
-      {/* Floating cube */}
-      <Float speed={1.8} rotationIntensity={0.8} floatIntensity={1}>
-        <Box args={[1.5, 1.5, 1.5]} position={[0, 3, -2]}>
-          <meshStandardMaterial 
-            color="#F59E0B" 
-            roughness={0.05} 
-            metalness={0.9}
-            emissive="#D97706"
-            emissiveIntensity={0.1}
-          />
-        </Box>
-      </Float>
+      {/* Orbiting Rings */}
+      {Array.from({ length: 3 }).map((_, i) => (
+        <Float key={i} speed={1.5 + i * 0.2} rotationIntensity={0.5} floatIntensity={1}>
+          <Torus args={[2 + i * 1.5, 0.1, 8, 64]} position={[0, 0, 0]} rotation={[Math.PI / 4 * i, 0, 0]}>
+            <meshStandardMaterial 
+              color={`hsl(${180 + i * 30}, 100%, 60%)`}
+              emissive={`hsl(${180 + i * 30}, 100%, 40%)`}
+              emissiveIntensity={0.5}
+              transparent
+              opacity={0.6}
+            />
+          </Torus>
+        </Float>
+      ))}
 
-      {/* Additional geometric shapes for more complexity */}
-      <Float speed={2.2} rotationIntensity={1.2} floatIntensity={1.8}>
-        <Octahedron args={[0.8]} position={[-1, -2, 1]}>
-          <meshStandardMaterial 
-            color="#EF4444" 
-            roughness={0.1} 
-            metalness={0.8}
-            emissive="#DC2626"
-            emissiveIntensity={0.1}
-          />
-        </Octahedron>
-      </Float>
-
-      <Float speed={1.3} rotationIntensity={0.6} floatIntensity={1.2}>
-        <Cylinder args={[0.5, 0.5, 2, 8]} position={[1.5, 1.5, 2]}>
-          <meshStandardMaterial 
-            color="#10B981" 
-            roughness={0.1} 
-            metalness={0.8}
-            emissive="#059669"
-            emissiveIntensity={0.1}
-          />
-        </Cylinder>
-      </Float>
-
-      {/* Small orbiting particles */}
-      {Array.from({ length: 12 }).map((_, i) => {
-        const angle = (i / 12) * Math.PI * 2;
-        const radius = 4;
+      {/* Data Nodes */}
+      {Array.from({ length: 8 }).map((_, i) => {
+        const angle = (i / 8) * Math.PI * 2;
+        const radius = 6;
         const x = Math.cos(angle) * radius;
         const z = Math.sin(angle) * radius;
+        const y = Math.sin(angle * 2) * 2;
         
         return (
           <Float key={i} speed={3 + i * 0.1} rotationIntensity={2} floatIntensity={3}>
-            <Sphere args={[0.1, 16, 16]} position={[x, Math.sin(i) * 2, z]}>
+            <Octahedron args={[0.3]} position={[x, y, z]}>
               <meshStandardMaterial 
-                color={`hsl(${i * 30}, 70%, 60%)`}
-                emissive={`hsl(${i * 30}, 70%, 40%)`}
-                emissiveIntensity={0.3}
+                color="#ff00ff"
+                emissive="#ff0080"
+                emissiveIntensity={0.4}
+                wireframe={i % 2 === 0}
               />
-            </Sphere>
+            </Octahedron>
           </Float>
         );
       })}
@@ -101,44 +120,179 @@ function FloatingObjects() {
   );
 }
 
+// Energy Particles System
+function EnergyParticles() {
+  const particlesRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (particlesRef.current) {
+      particlesRef.current.children.forEach((child, i) => {
+        const time = state.clock.elapsedTime;
+        child.position.y = Math.sin(time * 2 + i) * 8;
+        child.rotation.y = time * (1 + i * 0.1);
+      });
+    }
+  });
+
+  const particles = useMemo(() => {
+    return Array.from({ length: 30 }).map((_, i) => {
+      const angle = (i / 30) * Math.PI * 2;
+      const radius = 20 + Math.random() * 15;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      
+      return {
+        position: [x, Math.random() * 16 - 8, z] as [number, number, number],
+        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
+        size: 0.05 + Math.random() * 0.1,
+      };
+    });
+  }, []);
+
+  return (
+    <group ref={particlesRef}>
+      {particles.map((particle, i) => (
+        <Sphere key={i} args={[particle.size, 8, 8]} position={particle.position}>
+          <meshStandardMaterial
+            color={particle.color}
+            emissive={particle.color}
+            emissiveIntensity={0.8}
+          />
+        </Sphere>
+      ))}
+    </group>
+  );
+}
+
+// Ground Grid
+function CyberGrid() {
+  const gridRef = useRef<THREE.Mesh>(null);
+  
+  useFrame((state) => {
+    if (gridRef.current) {
+      const material = gridRef.current.material as THREE.ShaderMaterial;
+      if (material.uniforms) {
+        material.uniforms.time.value = state.clock.elapsedTime;
+      }
+    }
+  });
+
+  const gridMaterial = useMemo(() => {
+    return new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+        color1: { value: new THREE.Color('#00ffff') },
+        color2: { value: new THREE.Color('#ff00ff') },
+      },
+      vertexShader: `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `,
+      fragmentShader: `
+        uniform float time;
+        uniform vec3 color1;
+        uniform vec3 color2;
+        varying vec2 vUv;
+        
+        void main() {
+          vec2 grid = fract(vUv * 20.0);
+          float line = step(0.05, grid.x) * step(0.05, grid.y);
+          
+          vec3 color = mix(color1, color2, sin(time + vUv.x * 10.0) * 0.5 + 0.5);
+          float alpha = (1.0 - line) * 0.3 + sin(time * 2.0 + vUv.x * 5.0) * 0.1;
+          
+          gl_FragColor = vec4(color, alpha);
+        }
+      `,
+      transparent: true,
+      side: THREE.DoubleSide,
+    });
+  }, []);
+
+  return (
+    <Plane ref={gridRef} args={[100, 100]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -12, 0]}>
+      <primitive object={gridMaterial} attach="material" />
+    </Plane>
+  );
+}
+
 export default function Scene3D({ className = "" }: { className?: string }) {
   return (
     <div className={`w-full h-full ${className}`}>
       <Canvas 
-        camera={{ position: [0, 0, 8], fov: 60 }}
-        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, 5, 12], fov: 75 }}
+        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
+          {/* Environment and Atmosphere */}
           <Environment preset="night" />
-          <fog attach="fog" args={['#0a0a0a', 8, 25]} />
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+          <fog attach="fog" args={['#0a0a1a', 15, 100]} />
           
-          {/* Enhanced lighting setup */}
-          <ambientLight intensity={0.15} />
-          <directionalLight position={[10, 10, 5]} intensity={0.8} castShadow />
+          {/* Advanced Lighting */}
+          <ambientLight intensity={0.1} color="#1a1a2e" />
           
-          {/* Multiple colored lights for atmosphere */}
-          <pointLight position={[-8, 4, -8]} color="#8B5CF6" intensity={0.8} />
-          <pointLight position={[8, -4, 8]} color="#06B6D4" intensity={0.8} />
-          <pointLight position={[0, 8, 0]} color="#F59E0B" intensity={0.6} />
-          <pointLight position={[-4, -8, 4]} color="#EF4444" intensity={0.6} />
+          {/* Key Lights */}
+          <directionalLight position={[10, 20, 10]} intensity={0.5} color="#00ffff" castShadow />
+          <directionalLight position={[-10, 15, -10]} intensity={0.3} color="#ff00ff" />
           
-          {/* Rim lighting */}
-          <directionalLight position={[-10, 0, -10]} color="#8B5CF6" intensity={0.3} />
-          <directionalLight position={[10, 0, 10]} color="#06B6D4" intensity={0.3} />
+          {/* Atmospheric Point Lights */}
+          <pointLight position={[0, 10, 0]} color="#00ffff" intensity={1} distance={30} />
+          <pointLight position={[-15, 5, -15]} color="#ff00ff" intensity={0.8} distance={25} />
+          <pointLight position={[15, 5, 15]} color="#ffff00" intensity={0.6} distance={20} />
+          <pointLight position={[0, -5, 20]} color="#ff0080" intensity={0.4} distance={35} />
           
-          <FloatingObjects />
+          {/* Rim Lighting for depth */}
+          <directionalLight position={[-20, 0, -20]} color="#0080ff" intensity={0.2} />
+          <directionalLight position={[20, 0, 20]} color="#8000ff" intensity={0.2} />
           
+          {/* World Elements */}
+          <CyberGrid />
+          <CyberpunkBuildings />
+          <HolographicElements />
+          <EnergyParticles />
+          
+          {/* Camera Controls */}
           <OrbitControls 
-            enableZoom={false} 
+            enableZoom={true}
+            minDistance={8}
+            maxDistance={25}
             autoRotate 
-            autoRotateSpeed={0.3}
+            autoRotateSpeed={0.5}
             enablePan={false}
-            maxPolarAngle={Math.PI / 1.8}
-            minPolarAngle={Math.PI / 3}
+            maxPolarAngle={Math.PI / 1.5}
+            minPolarAngle={Math.PI / 4}
             enableDamping
-            dampingFactor={0.05}
+            dampingFactor={0.03}
           />
+          
+          {/* Post-processing Effects */}
+          <EffectComposer>
+            <Bloom 
+              luminanceThreshold={0.2}
+              luminanceSmoothing={0.9}
+              height={300}
+              opacity={1.5}
+            />
+            <ChromaticAberration
+              blendFunction={BlendFunction.NORMAL}
+              offset={new THREE.Vector2(0.001, 0.001)}
+            />
+            <Vignette
+              eskil={false}
+              offset={0.1}
+              darkness={0.5}
+            />
+            <Noise 
+              premultiply
+              blendFunction={BlendFunction.SCREEN}
+              opacity={0.03}
+            />
+          </EffectComposer>
         </Suspense>
       </Canvas>
     </div>
