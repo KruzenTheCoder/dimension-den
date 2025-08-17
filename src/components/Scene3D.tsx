@@ -1,7 +1,7 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, Float, Sphere, Torus, Box, Environment, Text, Cylinder, Octahedron, Plane, useTexture, Stars, Cloud } from '@react-three/drei';
 import { Suspense, useRef, useMemo } from 'react';
-import { EffectComposer, Bloom, ChromaticAberration, Vignette, Noise } from '@react-three/postprocessing';
+import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
@@ -276,21 +276,16 @@ export default function Scene3D({ className = "" }: { className?: string }) {
               luminanceThreshold={0.2}
               luminanceSmoothing={0.9}
               height={300}
-              opacity={1.5}
+              intensity={1.5}
             />
             <ChromaticAberration
               blendFunction={BlendFunction.NORMAL}
-              offset={new THREE.Vector2(0.001, 0.001)}
+              offset={[0.001, 0.001]}
             />
             <Vignette
               eskil={false}
               offset={0.1}
               darkness={0.5}
-            />
-            <Noise 
-              premultiply
-              blendFunction={BlendFunction.SCREEN}
-              opacity={0.03}
             />
           </EffectComposer>
         </Suspense>
