@@ -42,19 +42,60 @@ export default function About() {
           >
             <Card className="glass-card p-8">
               <h3 className="text-2xl font-bold mb-4 text-gradient">My Journey</h3>
-              <p className="text-muted-foreground leading-relaxed">
-                I'm Kruz Naidoo, a 27-year-old full-stack developer with 8 years of experience 
-                spanning BPO, enterprise solutions, and diverse industries. I specialize in 
-                building scalable applications using React, Node.js, .NET, Python, and ERPNext.
+              <p className="text-muted-foreground leading-relaxed mb-4">
+                I'm Kruz Naidoo, a 27-year-old Full-Stack Developer & IT Engineer with 8 years of experience 
+                delivering enterprise-grade solutions across BPO, finance, electrical construction, and 
+                technology-driven industries. I specialize in building scalable applications, optimizing 
+                workflows, and integrating intelligent systems that transform how businesses operate.
               </p>
+              <p className="text-muted-foreground leading-relaxed">
+                With a background that spans Software Development and Network Engineering, I bring a rare 
+                mix of skills that allow me to design robust infrastructure and user-friendly applications 
+                that work seamlessly together.
+              </p>
+            </Card>
+            
+            <Card className="glass-card p-8">
+              <h3 className="text-2xl font-bold mb-4 text-gradient">What I Do</h3>
+              <div className="space-y-4 text-muted-foreground leading-relaxed">
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">🔹 Full-Stack Development</h4>
+                  <p className="text-sm">
+                    I build high-performance, end-to-end solutions using C#, ASP.NET MVC, React.js, Next.js, 
+                    Node.js, Express.js, Python, Tailwind CSS, Material-UI, and SQL/NoSQL databases.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">🔹 Network Engineering & Infrastructure</h4>
+                  <p className="text-sm">
+                    From configuring routers, switches, and firewalls to implementing secure TCP/IP, DNS, 
+                    and VPN networks, I design resilient infrastructure that scales with growth.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">🔹 Workflow Automation & ERP Solutions</h4>
+                  <p className="text-sm">
+                    I excel at optimizing SOPs, automating repetitive tasks, and building ERPNext and custom 
+                    solutions that improve efficiency and reduce errors.
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground mb-2">🔹 AI & Intelligent Systems</h4>
+                  <p className="text-sm">
+                    I integrate AI-driven automation, LLM training, and optimization into enterprise 
+                    solutions—enabling smarter decision-making and productivity boosts.
+                  </p>
+                </div>
+              </div>
             </Card>
             
             <Card className="glass-card p-8">
               <h3 className="text-2xl font-bold mb-4 text-gradient">My Approach</h3>
               <p className="text-muted-foreground leading-relaxed">
-                I thrive on solving real-world problems by designing reliable, user-friendly 
-                applications that make a tangible impact. From automation workflows to ERP 
-                solutions, I focus on efficiency and innovation.
+                I don't just write code—I solve business problems. My work bridges the gap between technical 
+                precision and business strategy, ensuring every solution I deliver is practical, impactful, 
+                and future-ready. I thrive on continuous learning, adopting emerging technologies to keep 
+                my solutions ahead of the curve.
               </p>
             </Card>
           </motion.div>
