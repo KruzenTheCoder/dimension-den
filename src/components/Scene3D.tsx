@@ -1,8 +1,6 @@
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Float, Sphere, Torus, Box, Environment, Text, Cylinder, Octahedron, Plane, useTexture, Stars, Cloud } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Float, Sphere, Torus, Box, Environment, Stars, Plane, Octahedron } from '@react-three/drei';
 import { Suspense, useRef, useMemo } from 'react';
-import { EffectComposer, Bloom, ChromaticAberration, Vignette } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
 import * as THREE from 'three';
 
 // Cyberpunk City Buildings
@@ -224,31 +222,20 @@ export default function Scene3D({ className = "" }: { className?: string }) {
     <div className={`w-full h-full ${className}`}>
       <Canvas 
         camera={{ position: [0, 5, 12], fov: 75 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        gl={{ antialias: true, alpha: true }}
         dpr={[1, 2]}
       >
         <Suspense fallback={null}>
           {/* Environment and Atmosphere */}
           <Environment preset="night" />
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          <fog attach="fog" args={['#0a0a1a', 15, 100]} />
+          <Stars radius={100} depth={50} count={3000} factor={4} saturation={0} fade speed={1} />
+          <fog attach="fog" args={['#0a0a1a', 15, 60]} />
           
-          {/* Advanced Lighting */}
-          <ambientLight intensity={0.1} color="#1a1a2e" />
-          
-          {/* Key Lights */}
-          <directionalLight position={[10, 20, 10]} intensity={0.5} color="#00ffff" castShadow />
-          <directionalLight position={[-10, 15, -10]} intensity={0.3} color="#ff00ff" />
-          
-          {/* Atmospheric Point Lights */}
+          {/* Lighting */}
+          <ambientLight intensity={0.2} color="#1a1a2e" />
+          <directionalLight position={[10, 20, 10]} intensity={0.5} color="#00ffff" />
           <pointLight position={[0, 10, 0]} color="#00ffff" intensity={1} distance={30} />
           <pointLight position={[-15, 5, -15]} color="#ff00ff" intensity={0.8} distance={25} />
-          <pointLight position={[15, 5, 15]} color="#ffff00" intensity={0.6} distance={20} />
-          <pointLight position={[0, -5, 20]} color="#ff0080" intensity={0.4} distance={35} />
-          
-          {/* Rim Lighting for depth */}
-          <directionalLight position={[-20, 0, -20]} color="#0080ff" intensity={0.2} />
-          <directionalLight position={[20, 0, 20]} color="#8000ff" intensity={0.2} />
           
           {/* World Elements */}
           <CyberGrid />
@@ -269,25 +256,6 @@ export default function Scene3D({ className = "" }: { className?: string }) {
             enableDamping
             dampingFactor={0.03}
           />
-          
-          {/* Post-processing Effects */}
-          <EffectComposer>
-            <Bloom 
-              luminanceThreshold={0.2}
-              luminanceSmoothing={0.9}
-              height={300}
-              intensity={1.5}
-            />
-            <ChromaticAberration
-              blendFunction={BlendFunction.NORMAL}
-              offset={[0.001, 0.001]}
-            />
-            <Vignette
-              eskil={false}
-              offset={0.1}
-              darkness={0.5}
-            />
-          </EffectComposer>
         </Suspense>
       </Canvas>
     </div>
