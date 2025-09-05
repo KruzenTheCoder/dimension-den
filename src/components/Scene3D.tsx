@@ -1,95 +1,180 @@
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Float, Sphere, Torus, Box, Environment, Stars } from '@react-three/drei';
+import { OrbitControls, Float, Box, Environment, Stars, Text, Plane } from '@react-three/drei';
 import { Suspense, useRef, useMemo } from 'react';
 import * as THREE from 'three';
 
-// Simplified Holographic Elements
-function HolographicElements() {
+// Programming Languages and Code Editors floating around
+function CodeEditors() {
   const groupRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
     if (groupRef.current) {
-      groupRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      groupRef.current.rotation.y = state.clock.elapsedTime * 0.05;
     }
   });
 
+  const editors = useMemo(() => {
+    return [
+      { name: 'React', color: '#61dafb', position: [8, 2, 4] },
+      { name: 'Node.js', color: '#339933', position: [-8, -1, 3] },
+      { name: 'TypeScript', color: '#3178c6', position: [6, -3, -5] },
+      { name: 'Python', color: '#3776ab', position: [-6, 3, -4] },
+      { name: 'JavaScript', color: '#f7df1e', position: [4, 5, 2] },
+      { name: 'Next.js', color: '#ffffff', position: [-4, -4, 6] },
+    ];
+  }, []);
+
   return (
     <group ref={groupRef}>
-      {/* Central Core */}
-      <Float speed={2} rotationIntensity={1} floatIntensity={2}>
-        <Sphere args={[1.5, 32, 32]} position={[0, 0, 0]}>
-          <meshStandardMaterial 
-            color="#00ffff" 
-            roughness={0.1} 
-            metalness={0.9}
-            emissive="#0080ff"
-            emissiveIntensity={0.3}
-          />
-        </Sphere>
-      </Float>
-      
-      {/* Orbiting Rings */}
-      {Array.from({ length: 3 }).map((_, i) => (
-        <Float key={i} speed={1.5 + i * 0.2} rotationIntensity={0.5} floatIntensity={1}>
-          <Torus args={[2 + i * 1.5, 0.1, 8, 32]} position={[0, 0, 0]} rotation={[Math.PI / 4 * i, 0, 0]}>
-            <meshStandardMaterial 
-              color={`hsl(${180 + i * 30}, 100%, 60%)`}
-              emissive={`hsl(${180 + i * 30}, 100%, 40%)`}
-              emissiveIntensity={0.3}
-            />
-          </Torus>
-        </Float>
-      ))}
-
-      {/* Data Nodes */}
-      {Array.from({ length: 6 }).map((_, i) => {
-        const angle = (i / 6) * Math.PI * 2;
-        const radius = 6;
-        const x = Math.cos(angle) * radius;
-        const z = Math.sin(angle) * radius;
-        const y = Math.sin(angle * 2) * 2;
-        
-        return (
-          <Float key={i} speed={3 + i * 0.1} rotationIntensity={1} floatIntensity={2}>
-            <Box args={[0.3, 0.3, 0.3]} position={[x, y, z]}>
+      {editors.map((editor, i) => (
+        <Float key={editor.name} speed={2 + i * 0.2} rotationIntensity={0.3} floatIntensity={2}>
+          <group position={editor.position as [number, number, number]}>
+            {/* Editor Window Frame */}
+            <Box args={[3, 2, 0.1]} position={[0, 0, 0]}>
               <meshStandardMaterial 
-                color="#ff00ff"
-                emissive="#ff0080"
-                emissiveIntensity={0.4}
+                color="#1a1a2e"
+                emissive="#0d1117" 
+                emissiveIntensity={0.2}
+                roughness={0.3}
+                metalness={0.1}
               />
             </Box>
-          </Float>
-        );
-      })}
+            
+            {/* Screen Content */}
+            <Box args={[2.8, 1.8, 0.05]} position={[0, 0, 0.06]}>
+              <meshStandardMaterial 
+                color="#0d1117"
+                emissive={editor.color}
+                emissiveIntensity={0.1}
+              />
+            </Box>
+            
+            {/* Language Logo/Icon */}
+            <Box args={[0.4, 0.4, 0.1]} position={[-1, 0.6, 0.1]}>
+              <meshStandardMaterial 
+                color={editor.color}
+                emissive={editor.color}
+                emissiveIntensity={0.6}
+              />
+            </Box>
+            
+            {/* Code Lines Effect */}
+            {Array.from({ length: 6 }).map((_, lineIndex) => (
+              <Box 
+                key={lineIndex}
+                args={[1.5 - (lineIndex * 0.2), 0.05, 0.02]} 
+                position={[0.2, 0.4 - (lineIndex * 0.15), 0.12]}
+              >
+                <meshStandardMaterial 
+                  color={editor.color}
+                  emissive={editor.color}
+                  emissiveIntensity={0.3}
+                  transparent
+                  opacity={0.8 - (lineIndex * 0.1)}
+                />
+              </Box>
+            ))}
+          </group>
+        </Float>
+      ))}
     </group>
   );
 }
 
-// Simplified Energy Particles
-function EnergyParticles() {
+// Terminal Windows floating around
+function TerminalWindows() {
+  const terminalsRef = useRef<THREE.Group>(null);
+  
+  useFrame((state) => {
+    if (terminalsRef.current) {
+      terminalsRef.current.rotation.y = -state.clock.elapsedTime * 0.03;
+    }
+  });
+
+  const terminals = useMemo(() => {
+    return [
+      { command: '$ npm run dev', position: [10, 1, -2] },
+      { command: '$ git commit', position: [-10, -2, 1] },
+      { command: '$ yarn build', position: [7, -4, -6] },
+      { command: '$ npm install', position: [-7, 4, 5] },
+    ];
+  }, []);
+
+  return (
+    <group ref={terminalsRef}>
+      {terminals.map((terminal, i) => (
+        <Float key={i} speed={1.5 + i * 0.3} rotationIntensity={0.2} floatIntensity={1.5}>
+          <group position={terminal.position as [number, number, number]}>
+            {/* Terminal Window */}
+            <Box args={[2.5, 1.5, 0.08]} position={[0, 0, 0]}>
+              <meshStandardMaterial 
+                color="#000000"
+                emissive="#00ff41" 
+                emissiveIntensity={0.1}
+                roughness={0.2}
+                metalness={0.8}
+              />
+            </Box>
+            
+            {/* Terminal Screen */}
+            <Box args={[2.3, 1.3, 0.04]} position={[0, 0, 0.05]}>
+              <meshStandardMaterial 
+                color="#0c0c0c"
+                emissive="#00ff41"
+                emissiveIntensity={0.2}
+              />
+            </Box>
+            
+            {/* Command Prompt Line */}
+            <Box args={[1.8, 0.08, 0.02]} position={[0, 0.2, 0.08]}>
+              <meshStandardMaterial 
+                color="#00ff41"
+                emissive="#00ff41"
+                emissiveIntensity={0.8}
+              />
+            </Box>
+            
+            {/* Cursor */}
+            <Box args={[0.05, 0.08, 0.02]} position={[0.9, 0.2, 0.08]}>
+              <meshStandardMaterial 
+                color="#00ff41"
+                emissive="#00ff41"
+                emissiveIntensity={1}
+              />
+            </Box>
+          </group>
+        </Float>
+      ))}
+    </group>
+  );
+}
+
+// Floating Data Particles
+function DataParticles() {
   const particlesRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
     if (particlesRef.current) {
       particlesRef.current.children.forEach((child, i) => {
         const time = state.clock.elapsedTime;
-        child.position.y = Math.sin(time * 1.5 + i) * 6;
-        child.rotation.y = time * (0.5 + i * 0.1);
+        child.position.y += Math.sin(time * 2 + i) * 0.001;
+        child.rotation.z = time * (0.2 + i * 0.05);
       });
     }
   });
 
   const particles = useMemo(() => {
-    return Array.from({ length: 15 }).map((_, i) => {
-      const angle = (i / 15) * Math.PI * 2;
-      const radius = 15 + Math.random() * 10;
+    return Array.from({ length: 25 }).map((_, i) => {
+      const angle = (i / 25) * Math.PI * 2;
+      const radius = 12 + Math.random() * 8;
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
+      const y = (Math.random() - 0.5) * 10;
       
       return {
-        position: [x, Math.random() * 12 - 6, z] as [number, number, number],
-        color: `hsl(${Math.random() * 360}, 70%, 60%)`,
-        size: 0.1 + Math.random() * 0.2,
+        position: [x, y, z] as [number, number, number],
+        color: Math.random() > 0.5 ? '#00ffff' : '#ff00ff',
+        size: 0.05 + Math.random() * 0.1,
       };
     });
   }, []);
@@ -97,59 +182,68 @@ function EnergyParticles() {
   return (
     <group ref={particlesRef}>
       {particles.map((particle, i) => (
-        <Sphere key={i} args={[particle.size, 8, 8]} position={particle.position}>
+        <Box key={i} args={[particle.size, particle.size, particle.size]} position={particle.position}>
           <meshStandardMaterial
             color={particle.color}
             emissive={particle.color}
-            emissiveIntensity={0.6}
+            emissiveIntensity={0.8}
+            transparent
+            opacity={0.7}
           />
-        </Sphere>
+        </Box>
       ))}
     </group>
   );
 }
 
-// Simplified Buildings
-function CyberpunkBuildings() {
-  const buildingsRef = useRef<THREE.Group>(null);
+// Central Holographic Core
+function HolographicCore() {
+  const coreRef = useRef<THREE.Group>(null);
   
   useFrame((state) => {
-    if (buildingsRef.current) {
-      buildingsRef.current.rotation.y = state.clock.elapsedTime * 0.02;
+    if (coreRef.current) {
+      coreRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      coreRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
     }
   });
 
-  const buildings = useMemo(() => {
-    return Array.from({ length: 12 }).map((_, i) => {
-      const angle = (i / 12) * Math.PI * 2;
-      const radius = 20 + Math.random() * 8;
-      const height = 3 + Math.random() * 10;
-      const x = Math.cos(angle) * radius;
-      const z = Math.sin(angle) * radius;
-      
-      return {
-        position: [x, -height/2, z] as [number, number, number],
-        scale: [1 + Math.random() * 1.5, height, 1 + Math.random() * 1.5] as [number, number, number],
-        color: `hsl(${180 + Math.random() * 60}, 60%, ${25 + Math.random() * 15}%)`,
-        emissive: `hsl(${180 + Math.random() * 60}, 70%, 15%)`,
-      };
-    });
-  }, []);
-
   return (
-    <group ref={buildingsRef}>
-      {buildings.map((building, i) => (
-        <Box key={i} args={[1, 1, 1]} position={building.position} scale={building.scale}>
-          <meshStandardMaterial
-            color={building.color}
-            emissive={building.emissive}
-            emissiveIntensity={0.1}
-            roughness={0.7}
-            metalness={0.3}
+    <Float speed={1} rotationIntensity={0.2} floatIntensity={1}>
+      <group ref={coreRef}>
+        {/* Central Processing Core */}
+        <Box args={[1, 1, 1]} position={[0, 0, 0]}>
+          <meshStandardMaterial 
+            color="#8b5cf6" 
+            emissive="#8b5cf6"
+            emissiveIntensity={0.4}
+            roughness={0.1}
+            metalness={0.9}
+            transparent
+            opacity={0.8}
           />
         </Box>
-      ))}
-    </group>
+        
+        {/* Orbiting Data Rings */}
+        {Array.from({ length: 3 }).map((_, i) => (
+          <group key={i} rotation={[0, 0, (Math.PI / 3) * i]}>
+            <Box args={[3 + i, 0.05, 0.05]} position={[0, 0, 0]}>
+              <meshStandardMaterial 
+                color="#00ffff"
+                emissive="#00ffff"
+                emissiveIntensity={0.6}
+              />
+            </Box>
+            <Box args={[0.05, 3 + i, 0.05]} position={[0, 0, 0]}>
+              <meshStandardMaterial 
+                color="#ff00ff"
+                emissive="#ff00ff"
+                emissiveIntensity={0.6}
+              />
+            </Box>
+          </group>
+        ))}
+      </group>
+    </Float>
   );
 }
 
@@ -175,9 +269,10 @@ export default function Scene3D({ className = "" }: { className?: string }) {
           <pointLight position={[12, 4, 12]} color="#ffff00" intensity={0.4} distance={18} />
           
           {/* World Elements */}
-          <CyberpunkBuildings />
-          <HolographicElements />
-          <EnergyParticles />
+          <HolographicCore />
+          <CodeEditors />
+          <TerminalWindows />
+          <DataParticles />
           
           {/* Camera Controls */}
           <OrbitControls 
